@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#303030"
+    android:layout_height="match_parent">
+    <ImageView
+        android:src="@drawable/top_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="description" 
+        />
+    <EditText
+        android:id="@+id/ip_address"
+        android:inputType="number|numberDecimal"
+        android:digits="0123456789."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableBottom="#fff7cf5a"
+        android:textColor="#ffffffff" />
+    <Button
+        android:text="Connect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button1" />
+</LinearLayout>
+

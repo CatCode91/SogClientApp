@@ -1,0 +1,24 @@
+<resources>
+
+	<!-- Base application theme. -->
+	<style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+		<!-- Customize your theme here. -->
+		<item name="android:textColor">#f7f7d5</item>
+		<item name="android:panelFullBackground">#f7f7d5</item>
+
+	</style>
+
+	<style name="AppTheme.NoActionBar">
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
+
+	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+	<style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+		<item name="android:background">#2e2e23</item>
+		<item name="android:textColor">#f7f7da</item>
+	</style>
+</resources>
