@@ -1,0 +1,105 @@
+###################
+# compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.pdb
+*.dll.config
+*.cache
+*.suo
+*.css
+*.min.*
+
+# Include dlls if they’re in the NuGet packages directory
+!/packages/*/lib/*.dll
+!/packages/*/lib/*/*.dll
+# Include dlls if they're in the CommonReferences directory
+!*CommonReferences/*.dll
+####################
+# VS Upgrade stuff #
+####################
+UpgradeLog.XML
+_UpgradeReport_Files/
+###############
+# Directories #
+###############
+bin/
+obj/
+TestResults/
+Database/
+/.vs
+node_modules/
+lib/
+bundles/
+
+###################
+# Web publish log #
+###################
+*.Publish.xml
+#############
+# Resharper #
+#############
+/_ReSharper.*
+*.ReSharper.*
+############
+# Packages #
+############
+# it’s better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+######################
+# Logs and databases #
+######################
+*.log
+*.sqlite
+# OS generated files #
+######################
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+[Bb]in
+[Oo]bj
+[Tt]est[Rr]esults
+*.suo
+# ignore all paths ending in '.user'
+*.user
+# but don't ignore these paths if they are directories.
+!*.user/
+*.[Cc]ache
+*[Rr]esharper*
+packages
+NuGet.exe
+_[Ss]cripts
+*.exe
+*.dll
+*.nupkg
+*.ncrunchsolution
+*.dot[Cc]over
+WebTime/WebTime/.vs/WebTime/v15/Server/sqlite3/storage.ide-wal
+WebTime/WebTime/.vs/WebTime/v15/Server/sqlite3/storage.ide-shm
+WebTime/WebTime/.vs/WebTime/v15/Server/sqlite3/storage.ide
+WebTime/WebTime/.vs/WebTime/v15/Server/sqlite3/db.lock
+WebTime/WebTime/IdentityModule/.vs/IdentityModule/v15/Server/sqlite3/db.lock
+WebTime/WebTime/IdentityModule/.vs/IdentityModule/v15/Server/sqlite3/storage.ide
+.idea
+/WebTime/WebTime/.vs/WebTime/DesignTimeBuild/.dtbcache
+/WebTime/WebTime/.vs/config/applicationhost.config
+/WebTime/WebTime/.vs
+WebTime/KeycloackAuth/.vs/KeycloackAyth/v16/Server/sqlite3/storage.ide-shm
+WebTime/KeycloackAuth/.vs/KeycloackAyth/v16/Server/sqlite3/storage.ide
+WebTime/KeycloackAuth/.vs/KeycloackAyth/v16/Server/sqlite3/db.lock
+WebTime/KeycloackAuth/.vs/KeycloackAyth/v16/Server/sqlite3/storage.ide-wal
+WebTime/WebTimeBuildDeploy/.vs/
+WebTime/WebTime/WebTime/appsettings.Development.json
+/WebTime/MailSender/.vs/MailSender/v16/TestStore/0
+WebTime/WebTime/WebTime.App/appsettings.Development.json
