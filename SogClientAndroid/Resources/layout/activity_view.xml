@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+         <LinearLayout
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:padding="10dp"
+             android:id="@+id/text_layout">
+             <TextView
+                 android:text="Medium Text"
+                 android:textAppearance="?android:attr/textAppearanceMedium"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:minWidth="25px"
+                 android:minHeight="25px"
+                 android:textSize="48dp"
+                 android:id="@+id/txt_text"
+                 android:textAlignment="center"/>
+             <TextView
+                 android:text="Medium Text"
+                 android:layout_margin="10dp"
+                 android:textAppearance="?android:attr/textAppearanceMedium"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:minWidth="25px"
+                 android:minHeight="25px"
+                 android:textAlignment="center"
+                 android:id="@+id/txt_caption" />
+         </LinearLayout>
+                 <ImageView
+     android:id="@+id/img_chords"
+     android:layout_width="fill_parent"
+     android:layout_height="fill_parent"
+     android:scaleType="centerCrop"
+     android:visibility="gone"
+     android:contentDescription="description"  />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

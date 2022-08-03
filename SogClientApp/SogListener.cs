@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using SogClientLib.Models.Interfaces;
 
 namespace SogClientLib
 {
@@ -16,15 +16,20 @@ namespace SogClientLib
     //Recieving size of the text, then text
     //Recieving size of the caption, then caption
 
+    [Serializable]
     public class SogListener
     {
         private SogConnection _connection;
         private Socket _socket;
         private NetworkStream _stream;
         private CancellationTokenSource _cancellationToken;
-        public event Action<SogMessage> SogMessageRecieved;
 
-        public void ConnectToServer(SogConnection connection)
+        public bool IsAvailiable => _socket.Connected;
+        public AppMode Mode => _connection.AppMode;
+        public event Action<ISogMessage> SogMessageRecieved;
+
+
+        public async Task ConnectToServerAsync(SogConnection connection)
         {
             _connection = connection;
             int port = int.Parse(_connection.Port);
@@ -55,7 +60,7 @@ namespace SogClientLib
                 }
                 _stream = new NetworkStream(_socket);
 
-                Task.Run(() => ListenServer(_cancellationToken.Token));
+                await Task.Run(() => ListenServer(_cancellationToken.Token));
             }
         }
         public void SwitchMode(AppMode? appMode = null)
@@ -107,6 +112,7 @@ namespace SogClientLib
         private SogMessage GetImageFromStream()
         {
             SogMessage message = new SogMessage();
+            message.Type = MessageType.Picture;
             var buffer = new byte[4];
             _stream.Read(buffer, 0, 4);
             int width = BitConverter.EndianBitConverter.BigEndian.ToInt32(buffer, 0);
@@ -140,6 +146,7 @@ namespace SogClientLib
         private SogMessage GetTextFromStream()
         {
             SogMessage message = new SogMessage();
+            message.Type = MessageType.Text;
             var buffer = new byte[4];
             _stream.Read(buffer, 0, 4);
             message.TextSize = BitConverter.EndianBitConverter.BigEndian.ToInt32(buffer, 0);

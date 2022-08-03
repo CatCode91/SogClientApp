@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">SogClientAndroid</string>
+    <string name="app_name">SongOfGod client</string>
     <string name="action_settings">Settings</string>
+	<string name="app_version">1.0</string>
+	<string name="btn_connect">Connect</string>
+	<string name="add_ipAdress">Enter server IP-adress</string>
 </resources>

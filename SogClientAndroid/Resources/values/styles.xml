@@ -2,11 +2,8 @@
 
 	<!-- Base application theme. -->
 	<style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-		<!-- Customize your theme here. -->
 		<item name="android:textColor">#f7f7d5</item>
-		<item name="android:panelFullBackground">#f7f7d5</item>
-
-	</style>
+		<item name="android:panelFullBackground">#f7f7d5</item><item name="android:colorBackground">#ff231b08</item><item name="android:windowBackground">?android:attr/colorBackground</item></style>
 
 	<style name="AppTheme.NoActionBar">
 		<item name="windowActionBar">false</item>
