@@ -2,6 +2,7 @@
 using SogClientLib.Models;
 using SogClientLib.Models.Enums;
 using SogClientLib.Models.Interfaces;
+using SogTestForms.Helper;
 using System;
 using System.Windows.Forms;
 
@@ -14,15 +15,20 @@ namespace SogTestForms
         public Form1()
         {
             InitializeComponent();
-            _listener.ConnectToServer(new SogConnection
+            StartListen();
+        }
+
+        public async void StartListen() 
+        {
+            _listener.SogMessageRecieved += _listener_NewMessage;
+            await _listener.ConnectToServerAsync(new SogConnection
             {
                 IpAdress = "192.168.1.177",
                 Port = "8536",
                 AppMode = AppMode.Picture
             });
-            _listener.SogMessageRecieved += _listener_NewMessage;
-            txt_m.Text = "11";
 
+            _listener.SogMessageRecieved += _listener_NewMessage;
         }
 
         private void _listener_NewMessage(ISogMessage obj)
@@ -32,9 +38,9 @@ namespace SogTestForms
                 if (obj == null)
                     return;
 
-                if (obj.Picture != null)
+                if (obj.EncodedImage != null)
                 {
-                    picBox.Image = obj.Picture;
+                    picBox.Image = ImageHelper.DecodeImage(obj.EncodedImage);
                 }
                 else
                 {
@@ -50,6 +56,11 @@ namespace SogTestForms
         private void btn_switch_Click(object sender, EventArgs e)
         {
             _listener.SwitchMode();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

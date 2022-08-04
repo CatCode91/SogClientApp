@@ -8,6 +8,6 @@ namespace SogClientLib.Models.Interfaces
         MessageType Type { get; set; }
         string Caption { get; set; }
         string Text { get; set; }
-        Image Picture { get; set; }
+        EncodedImage EncodedImage { get; set; }
     }
 }

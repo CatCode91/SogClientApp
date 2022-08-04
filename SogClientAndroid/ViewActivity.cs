@@ -12,6 +12,8 @@ using SogClientLib.Models.Interfaces;
 using System;
 using System.Drawing;
 using System.IO;
+using Xamarin.Essentials;
+using static Android.Widget.TextView;
 
 namespace SogClientAndroid
 {
@@ -25,11 +27,17 @@ namespace SogClientAndroid
         private TextView _txtText;
         private SwipeRefreshLayout _swipeLayout;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_view);
+
+            _textLayout = FindViewById<LinearLayout>(Resource.Id.text_layout);
+            _imgChords = FindViewById<ImageView>(Resource.Id.img_chords);
+            _txtCaption = FindViewById<TextView>(Resource.Id.txt_caption);
+            _txtText = FindViewById<TextView>(Resource.Id.txt_text);
+            _txtText = FindViewById<TextView>(Resource.Id.txt_text);
 
 
             _listener = new SogListener();
@@ -43,7 +51,8 @@ namespace SogClientAndroid
                     IpAdress = Intent.GetStringExtra("ipAdress"),
                     Port = "8536",
                 };
-                _listener.ConnectToServerAsync(sogConnection).GetAwaiter().GetResult();
+
+                await _listener.ConnectToServerAsync(sogConnection);
             }
 
             catch (Exception ex)
@@ -52,20 +61,6 @@ namespace SogClientAndroid
                 _listener.SogMessageRecieved -= _listener_SogMessageRecieved;
                 Finish();
             }
-
-            _textLayout = FindViewById<LinearLayout>(Resource.Id.text_layout);
-            _imgChords = FindViewById<ImageView>(Resource.Id.img_chords);
-            _txtCaption = FindViewById<TextView>(Resource.Id.txt_caption);
-            _txtText = FindViewById<TextView>(Resource.Id.txt_text);
-            _txtText = FindViewById<TextView>(Resource.Id.txt_text);
-            _swipeLayout = FindViewById<SwipeRefreshLayout>(Resource.Id.swipeLayout);
-            _swipeLayout.Refresh += _swipeLayout_Refresh;
-
-        }
-
-        private void _swipeLayout_Refresh(object sender, EventArgs e)
-        {
-            _listener.SwitchMode();
         }
 
         private void _listener_SogMessageRecieved(ISogMessage obj)
@@ -73,7 +68,7 @@ namespace SogClientAndroid
             switch (obj.Type)
             {
                 case MessageType.Picture:
-                    SetImage(obj.Picture);
+                    SetImage(obj.EncodedImage);
                     break;
                 case MessageType.Text:
                     SetText(obj.Caption, obj.Text);
@@ -83,33 +78,44 @@ namespace SogClientAndroid
             }
         }
 
-        private void SetImage(Image picture)
+        private void SetImage(EncodedImage picture)
         {
-            _imgChords.Visibility = Android.Views.ViewStates.Visible;
-            _textLayout.Visibility = Android.Views.ViewStates.Gone;
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                _imgChords.Visibility = Android.Views.ViewStates.Visible;
+                _textLayout.Visibility = Android.Views.ViewStates.Gone;
 
-            byte[] buffer = ImageToByteArray(picture); // read the saved image file 
+                if (picture == null) 
+                {
+                    return;
+                }
 
-            Android.Graphics.Bitmap bitmap = BitmapFactory.DecodeByteArray(buffer, 0, buffer.Length);
-            _imgChords.SetImageBitmap(bitmap);
+                int countOfPixelPerOneByte = 4;
+                var bitmap = Android.Graphics.Bitmap.CreateBitmap(picture.Width, picture.Height, Android.Graphics.Bitmap.Config.Argb8888, false);
+                for (int i = 0; i < picture.Height; i++)
+                {
+                    for (int j = 0; j < picture.Width; j++)
+                    {
+                        int pixelIndex = i * picture.Width + j;
+                        int tone = ((picture.ByteArray[pixelIndex / countOfPixelPerOneByte] >> (3 - pixelIndex % countOfPixelPerOneByte) * 2) & 3) * 255 / 3;
+                        bitmap.SetPixel(j, i, Android.Graphics.Color.Rgb(tone, tone, tone));
+                    }
+                }
+
+                _imgChords.SetImageBitmap(bitmap);
+            });
         }
 
         private void SetText(string caption, string text)
         {
-            _imgChords.Visibility = Android.Views.ViewStates.Gone;
-            _textLayout.Visibility = Android.Views.ViewStates.Visible;
-
-            _txtCaption.Text = caption;
-            _txtText.Text = text;
-        }
-
-        private byte[] ImageToByteArray(System.Drawing.Image imageIn)
-        {
-            using (var ms = new MemoryStream())
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                imageIn.Save(ms, imageIn.RawFormat);
-                return ms.ToArray();
-            }
+                _imgChords.Visibility = Android.Views.ViewStates.Gone;
+                _textLayout.Visibility = Android.Views.ViewStates.Visible;
+
+                _txtCaption.SetText(caption, BufferType.Normal);
+                _txtText.SetText(text, BufferType.Normal);
+            });
         }
     }
 }

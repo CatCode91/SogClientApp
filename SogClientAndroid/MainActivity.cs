@@ -38,7 +38,7 @@ namespace SogClientAndroid
         {
             SogConnection sogConnection = new SogConnection
             {
-                AppMode = SogClientLib.Models.Enums.AppMode.Text,
+                AppMode = SogClientLib.Models.Enums.AppMode.Picture,
                 IpAdress = "192.168.1.177",
                 Port = "8536",
             };

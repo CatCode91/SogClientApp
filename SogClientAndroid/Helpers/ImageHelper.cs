@@ -1,14 +1,24 @@
-﻿using System.Drawing;
+﻿using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
 
-namespace SogClientLib.Helpers
+namespace SogClientAndroid.Helpers
 {
     public class ImageHelper
     {
-        //all questions regarding this logic ask Slava Guk...t.me/slavaguk2000
+        //questions regarding this logic ask Slava Guk...t.me/slavaguk2000
 
         private const int countOfPixelPerOneByte = 4;
 
-        public static Image DecodeImage(int height, int width, byte[] encodedArray)
+        public static Bitmap DecodeImage(int height, int width, byte[] encodedArray)
         {
             Bitmap map = new Bitmap(width, height);
             for (int i = 0; i < height; i++)

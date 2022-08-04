@@ -1,7 +1,6 @@
 ﻿using SogClientLib.Models;
 using SogClientLib.Models.Enums;
 using System;
-using SogClientLib.Helpers;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -27,7 +26,6 @@ namespace SogClientLib
         public bool IsAvailiable => _socket.Connected;
         public AppMode Mode => _connection.AppMode;
         public event Action<ISogMessage> SogMessageRecieved;
-
 
         public async Task ConnectToServerAsync(SogConnection connection)
         {
@@ -92,7 +90,7 @@ namespace SogClientLib
 
                 byte[] buffer = new byte[4];
                 _stream.Read(buffer, 0, 4);
-                int i = BitConverter.EndianBitConverter.BigEndian.ToInt32(buffer, 0);
+                int i = BinaryEncoding.Binary.BigEndian.GetInt32(buffer, 0);
 
                 switch (i)
                 {
@@ -115,13 +113,13 @@ namespace SogClientLib
             message.Type = MessageType.Picture;
             var buffer = new byte[4];
             _stream.Read(buffer, 0, 4);
-            int width = BitConverter.EndianBitConverter.BigEndian.ToInt32(buffer, 0);
+            int width = BinaryEncoding.Binary.BigEndian.GetInt32(buffer, 0);
 
             if (width > 0)
             {
                 buffer = new byte[4];
                 _stream.Read(buffer, 0, 4);
-                int height = BitConverter.EndianBitConverter.BigEndian.ToInt32(buffer, 0);
+                int height = BinaryEncoding.Binary.BigEndian.GetInt32(buffer, 0);
                 int size = (height * width + 3) / 4;
 
                 buffer = new byte[size];
@@ -132,13 +130,16 @@ namespace SogClientLib
                     readen += _stream.Read(buffer, 0, size);
                 }
 
-
-                var bitmap = ImageHelper.DecodeImage(height, width, buffer);
-                message.Picture = bitmap;
+                message.EncodedImage = new EncodedImage 
+                { 
+                    Height = height,
+                    Width = width,
+                    ByteArray = buffer
+                };
             }
             else 
             {
-                message.Picture = null;
+                message.EncodedImage = null;
             }
 
             return message;
@@ -149,7 +150,7 @@ namespace SogClientLib
             message.Type = MessageType.Text;
             var buffer = new byte[4];
             _stream.Read(buffer, 0, 4);
-            message.TextSize = BitConverter.EndianBitConverter.BigEndian.ToInt32(buffer, 0);
+            message.TextSize = BinaryEncoding.Binary.BigEndian.GetInt32(buffer, 0);
 
             buffer = new byte[message.TextSize];
             _stream.Read(buffer, 0, message.TextSize);
@@ -157,7 +158,7 @@ namespace SogClientLib
 
             buffer = new byte[4];
             _stream.Read(buffer, 0, 4);
-            message.CaptionSize = BitConverter.EndianBitConverter.BigEndian.ToInt32(buffer, 0);
+            message.CaptionSize = BinaryEncoding.Binary.BigEndian.GetInt32(buffer, 0);
 
             buffer = new byte[message.CaptionSize];
             _stream.Read(buffer, 0, message.CaptionSize);
